@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #1a1612;
+  --charcoal: #2a2420;
+  --brass: #b8860b;
+  --brass-light: #c9a84c;
+  --brass-dim: #8b6914;
+  --text-primary: #e8e0d4;
+  --text-muted: #8a7d6e;
+  --card-surface: rgba(42,36,32,0.6);
+  --card-border: rgba(184,134,11,0.15);
+}
+
+@theme {
+  --color-bg: #1a1612;
+  --color-charcoal: #2a2420;
+  --color-brass: #b8860b;
+  --color-brass-light: #c9a84c;
+  --color-brass-dim: #8b6914;
+  --color-text-primary: #e8e0d4;
+  --color-text-muted: #8a7d6e;
+  --font-display: 'Oi', serif;
+  --font-heading: 'Big Shoulders Display', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* GSAP handles smooth */
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Atmosphere layers (CSS only, no JS) ─── */
+
+.atmosphere-left {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 60% 50% at 15% 40%, rgba(58,42,30,0.45) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: breathe-left 8s ease-in-out infinite alternate;
+}
+
+.atmosphere-right {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 55% 45% at 85% 60%, rgba(184,134,11,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: breathe-right 8s ease-in-out infinite alternate;
+}
+
+@keyframes breathe-left {
+  from { opacity: 0.7; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes breathe-right {
+  from { opacity: 0.8; transform: scale(1.02); }
+  to { opacity: 0.6; transform: scale(0.97); }
+}
+
+/* ─── Decorative ring animations ─── */
+
+@keyframes spin-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+/* ─── Marquee animations ─── */
+
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee-track-left {
+  animation: marquee-left 30s linear infinite;
+}
+
+.marquee-track-right {
+  animation: marquee-right 38s linear infinite;
+}
+
+.marquee-row:hover .marquee-track-left,
+.marquee-row:hover .marquee-track-right {
+  animation-play-state: paused;
+}
+
+/* ─── Page curtain transition ─── */
+
+.page-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  z-index: 200;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+/* ─── Utility classes ─── */
+
+.font-display { font-family: 'Oi', serif; }
+.font-heading { font-family: 'Big Shoulders Display', sans-serif; }
+.font-body { font-family: 'Space Grotesk', sans-serif; }
+
+.eyebrow {
+  font-family: 'Big Shoulders Display', sans-serif;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--brass-light);
+}
+
+.letter {
+  display: inline-block;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Brass underline slide animation */
+.brass-underline {
+  position: relative;
+}
+
+.brass-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.brass-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Scroll indicator fade */
+.scroll-indicator {
+  transition: opacity 0.3s ease;
+}
+
+.scroll-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

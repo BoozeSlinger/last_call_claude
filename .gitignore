@@ -1,0 +1,25 @@
+# Next.js
+.next/
+out/
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Env — never commit
+.env.local
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
+
+# Debug
+npm-debug.log*
+pnpm-debug.log*
+
+# Playwright
+.playwright-mcp/
