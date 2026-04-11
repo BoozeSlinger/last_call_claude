@@ -3,7 +3,8 @@ import { Oi, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import GSAPProvider from '@/components/GSAPProvider'
 import PageTransition from '@/components/PageTransition'
-import DustCanvas from '@/components/DustCanvas'
+import AmbientDustCanvas from '@/components/AmbientDustCanvas'
+import NoiseOverlay from '@/components/NoiseOverlay'
 
 const oi = Oi({
   weight: '400',
@@ -61,13 +62,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body
         style={{
-          backgroundColor: '#1a1612',
+          backgroundColor: '#111009',
           color: '#e8e0d4',
           fontFamily: 'var(--font-space-grotesk), sans-serif',
         }}
       >
         {/* Fixed background canvas */}
-        <DustCanvas />
+        <AmbientDustCanvas />
+
+        {/* Animated noise overlay stack */}
+        <NoiseOverlay />
 
         {/* CSS atmosphere layers */}
         <div className="atmosphere-left" aria-hidden="true" />

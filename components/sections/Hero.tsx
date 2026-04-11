@@ -38,7 +38,7 @@ export default function Hero() {
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ paddingLeft: '5%', paddingRight: '5%' }}
+      style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: '10rem' }}
     >
       {/* Bottom-left decorative ring */}
       <div
@@ -81,18 +81,43 @@ export default function Hero() {
           <EyebrowText>Digital Agency · Bar &amp; Hospitality</EyebrowText>
         </div>
 
+        {/* All Seeing Ice — in document flow, above heading */}
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '340px',
+            margin: '0 auto 1.5rem',
+            pointerEvents: 'none',
+          }}
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              width: '100%',
+              height: 'auto',
+              display: 'block',
+              mixBlendMode: 'screen',
+            }}
+          >
+            <source src="/The All Seeing Ice.mp4" type="video/mp4" />
+          </video>
+        </div>
+
         {/* Wrapper applies the Oi font + size — AnimatedHeading receives className only */}
         <div
           style={{
             fontFamily: "'Oi', serif",
-            fontSize: 'clamp(5rem, 10vw, 9rem)',
+            fontSize: 'clamp(2.6rem, 5.5vw, 5rem)',
             color: 'var(--text-primary)',
-            lineHeight: 1.0,
+            lineHeight: 1.1,
             marginBottom: '1.5rem',
           }}
         >
           <AnimatedHeading as="h1" trigger={false}>
-            Last Call.
+            High Proof Design &amp; AI That Works the Late Shift.
           </AnimatedHeading>
         </div>
 
@@ -102,13 +127,13 @@ export default function Hero() {
             opacity: 0,
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: '1.2rem',
-            color: 'var(--text-muted)',
-            maxWidth: '520px',
+            color: 'var(--text-primary)',
+            maxWidth: '540px',
             margin: '0 auto 1.25rem',
             lineHeight: 1.6,
           }}
         >
-          Someone just asked ChatGPT for the best bar near them. Did your name come up?
+          The digital partner for hospitality brands that play to win.
         </p>
 
         <p
@@ -116,16 +141,15 @@ export default function Hero() {
           style={{
             opacity: 0,
             fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: '1rem',
+            fontSize: '1.05rem',
             color: 'var(--text-muted)',
-            maxWidth: '600px',
+            maxWidth: '480px',
             margin: '0 auto 2.5rem',
             lineHeight: 1.8,
+            letterSpacing: '0.01em',
           }}
         >
-          Most bars are invisible on AI, buried on Google, and one Yelp review away from a slow week.
-          Instagram doesn&apos;t fix that — it just rents you an audience you don&apos;t own.
-          We build the digital foundation that actually fills seats: AI visibility, guest capture, and a web presence that works while you&apos;re running the floor.
+          Iconic design.&nbsp; Bar-built AI.&nbsp; Less busywork. More profit.
         </p>
 
         <div ref={ctaRef} style={{ opacity: 0, marginBottom: '1.5rem' }}>

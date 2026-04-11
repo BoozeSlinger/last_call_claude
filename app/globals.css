@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #1a1612;
+  --bg: #111009;
   --charcoal: #2a2420;
   --brass: #b8860b;
   --brass-light: #c9a84c;
@@ -13,7 +13,7 @@
 }
 
 @theme {
-  --color-bg: #1a1612;
+  --color-bg: #111009;
   --color-charcoal: #2a2420;
   --color-brass: #b8860b;
   --color-brass-light: #c9a84c;
@@ -152,6 +152,11 @@ body {
 .word {
   display: inline-block;
   white-space: nowrap;
+}
+
+/* Video background removal */
+.video-transparent {
+  mix-blend-mode: multiply;
 }
 
 /* Brass underline slide animation */

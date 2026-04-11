@@ -126,19 +126,54 @@ export default function HouseMenu() {
     <section style={{ padding: '6rem 5%', position: 'relative' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
-        <div style={{ marginBottom: '3rem' }}>
-          <EyebrowText>The House Menu</EyebrowText>
+        <div
+          style={{
+            marginBottom: '3rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Left: eyebrow + heading */}
+          <div style={{ flex: '1 1 320px' }}>
+            <EyebrowText>The House Menu</EyebrowText>
+            <div
+              style={{
+                fontFamily: "'Oi', serif",
+                fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                color: 'var(--text-primary)',
+                marginTop: '0.75rem',
+              }}
+            >
+              <AnimatedHeading as="h2" trigger={true}>
+                What we pour.
+              </AnimatedHeading>
+            </div>
+          </div>
+
+          {/* Right: TV Tender video, no background */}
           <div
             style={{
-              fontFamily: "'Oi', serif",
-              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-              color: 'var(--text-primary)',
-              marginTop: '0.75rem',
+              flex: '0 0 auto',
+              width: 'clamp(160px, 20vw, 260px)',
+              pointerEvents: 'none',
             }}
           >
-            <AnimatedHeading as="h2" trigger={true}>
-              What we pour.
-            </AnimatedHeading>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                mixBlendMode: 'screen',
+              }}
+            >
+              <source src="/tvtendermp4.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
 
