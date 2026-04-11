@@ -14,7 +14,7 @@ const projects = [
     desc: 'AI strategy and digital presence built from scratch. They went from invisible to ranking #1 on ChatGPT for Thai food in their city. The phone doesn\'t stop.',
     tags: ['AI Strategy', 'Digital Presence', 'Local SEO'],
     color: '#2a1f15',
-    image: 'gra-pow-riverside',
+    image: 'grapow-logo',
   },
   {
     num: '02',
@@ -34,7 +34,7 @@ const projects = [
     desc: 'Marketing strategy and content systems for a beer brand that lives in bars, not boardrooms. Distribution-first, culture-forward.',
     tags: ['Marketing', 'Content', 'Brand Strategy'],
     color: '#1a2018',
-    image: 'IMG_5626_gdacct',
+    image: 'HappyDadBrandLogo_zkfp7f',
   },
   {
     num: '04',
