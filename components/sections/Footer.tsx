@@ -63,7 +63,7 @@ export default function Footer() {
         </div>
 
         {/* CTA */}
-        <a href="mailto:ryanhustliesie@gmail.com" style={{ textDecoration: 'none' }}>
+        <a href="mailto:ryanhustlesie@gmail.com" style={{ textDecoration: 'none' }}>
           <Button variant="brass" size="md">
             Start a project
           </Button>
