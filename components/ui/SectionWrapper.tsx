@@ -49,7 +49,7 @@ export default function SectionWrapper({
             }
           )
         }
-      }, el)
+      }, el!)
     }
 
     setup()

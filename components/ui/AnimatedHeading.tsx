@@ -57,7 +57,7 @@ export default function AnimatedHeading({
               : { delay: 0.1 }),
           }
         )
-      }, el)
+      }, el!)
     }
 
     setupAnimation()

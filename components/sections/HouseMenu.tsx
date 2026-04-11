@@ -96,7 +96,7 @@ export default function HouseMenu() {
       gsap.registerPlugin(ScrollTrigger)
 
       ctx = gsap.context(() => {
-        const rows = container.querySelectorAll('.service-row')
+        const rows = container!.querySelectorAll('.service-row')
         gsap.fromTo(
           rows,
           { x: -60, opacity: 0 },
@@ -113,7 +113,7 @@ export default function HouseMenu() {
             },
           }
         )
-      }, container)
+      }, container!)
     }
 
     setup()
