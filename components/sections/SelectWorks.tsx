@@ -65,6 +65,7 @@ export default function SelectWorks() {
 
   useEffect(() => {
     let ctx: { revert: () => void } | null = null
+    const tiltCleanups: (() => void)[] = []
 
     async function setup() {
       const gsap = (await import('gsap')).default
@@ -116,11 +117,57 @@ export default function SelectWorks() {
             }
           )
         })
+
+        // 3D tilt on image panels
+        const projectPanels = Array.from(
+          trackRef.current!.querySelectorAll<HTMLElement>('.project-panel')
+        )
+        projectPanels.forEach((panel) => {
+          const imgSide = panel.querySelector<HTMLElement>('.image-side')
+          if (!imgSide) return
+
+          gsap.set(imgSide, { transformPerspective: 1200, force3D: true })
+
+          const onMove = (e: MouseEvent) => {
+            const rect = panel.getBoundingClientRect()
+            const xPct = ((e.clientX - rect.left) / rect.width - 0.5) * 2
+            const yPct = ((e.clientY - rect.top) / rect.height - 0.5) * 2
+            imgSide.style.willChange = 'transform'
+            gsap.to(imgSide, {
+              rotationY: xPct * 8,
+              rotationX: -yPct * 5,
+              ease: 'power2.out',
+              duration: 0.35,
+              overwrite: 'auto',
+            })
+          }
+
+          const onLeave = () => {
+            gsap.to(imgSide, {
+              rotationY: 0,
+              rotationX: 0,
+              ease: 'elastic.out(1, 0.4)',
+              duration: 0.7,
+              overwrite: 'auto',
+              onComplete: () => { imgSide.style.willChange = 'auto' },
+            })
+          }
+
+          panel.addEventListener('mousemove', onMove)
+          panel.addEventListener('mouseleave', onLeave)
+          tiltCleanups.push(() => {
+            panel.removeEventListener('mousemove', onMove)
+            panel.removeEventListener('mouseleave', onLeave)
+          })
+        })
       })
     }
 
     setup()
-    return () => ctx?.revert()
+    return () => {
+      ctx?.revert()
+      tiltCleanups.forEach(fn => fn())
+    }
   }, [])
 
   return (
@@ -181,6 +228,7 @@ export default function SelectWorks() {
               >
                 {/* Image side (55%) */}
                 <div
+                  className="image-side"
                   style={{
                     width: '55%',
                     height: '100%',

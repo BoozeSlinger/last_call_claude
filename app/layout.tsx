@@ -5,6 +5,7 @@ import GSAPProvider from '@/components/GSAPProvider'
 import PageTransition from '@/components/PageTransition'
 import AmbientDustCanvas from '@/components/AmbientDustCanvas'
 import NoiseOverlay from '@/components/NoiseOverlay'
+import MagneticCursor from '@/components/ui/MagneticCursor'
 
 const oi = Oi({
   weight: '400',
@@ -67,6 +68,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           fontFamily: 'var(--font-space-grotesk), sans-serif',
         }}
       >
+        {/* Custom brass cursor */}
+        <MagneticCursor />
+
         {/* Fixed background canvas */}
         <AmbientDustCanvas />
 

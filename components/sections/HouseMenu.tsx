@@ -83,12 +83,14 @@ const services = [
 export default function HouseMenu() {
   const [activeIndex, setActiveIndex] = useState(0)
   const listRef = useRef<HTMLDivElement>(null)
+  const spotlightRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const container = listRef.current
     if (!container) return
 
     let ctx: { revert: () => void } | null = null
+    let spotCleanup: (() => void) | undefined
 
     async function setup() {
       const gsap = (await import('gsap')).default
@@ -114,10 +116,42 @@ export default function HouseMenu() {
           }
         )
       }, container!)
+
+      // Cursor spotlight tracking
+      if (spotlightRef.current) {
+        const spot = spotlightRef.current
+        gsap.set(spot, { xPercent: -50, yPercent: -50, opacity: 0 })
+
+        const onMove = (e: MouseEvent) => {
+          const rect = container!.getBoundingClientRect()
+          gsap.to(spot, {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+            duration: 0.35,
+            ease: 'power2.out',
+            overwrite: 'auto',
+          })
+          gsap.to(spot, { opacity: 1, duration: 0.15 })
+        }
+
+        const onLeave = () => {
+          gsap.to(spot, { opacity: 0, duration: 0.4 })
+        }
+
+        container!.addEventListener('mousemove', onMove)
+        container!.addEventListener('mouseleave', onLeave)
+        spotCleanup = () => {
+          container!.removeEventListener('mousemove', onMove)
+          container!.removeEventListener('mouseleave', onLeave)
+        }
+      }
     }
 
     setup()
-    return () => ctx?.revert()
+    return () => {
+      ctx?.revert()
+      spotCleanup?.()
+    }
   }, [])
 
   const active = services[activeIndex]
@@ -187,7 +221,23 @@ export default function HouseMenu() {
           }}
         >
           {/* Left column — service list */}
-          <div ref={listRef}>
+          <div ref={listRef} style={{ position: 'relative' }}>
+            {/* Cursor glow spotlight */}
+            <div
+              ref={spotlightRef}
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                width: 320,
+                height: 320,
+                borderRadius: '50%',
+                background: 'radial-gradient(ellipse at center, rgba(184,134,11,0.07) 0%, transparent 70%)',
+                pointerEvents: 'none',
+                zIndex: 0,
+                left: 0,
+                top: 0,
+              }}
+            />
             {services.map((service, i) => (
               <div
                 key={service.num}
@@ -201,6 +251,7 @@ export default function HouseMenu() {
                   borderBottom: '1px solid rgba(184,134,11,0.08)',
                   cursor: 'default',
                   position: 'relative',
+                  zIndex: 1,
                   opacity: 0,
                 }}
               >

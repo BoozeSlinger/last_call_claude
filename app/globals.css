@@ -190,3 +190,10 @@ body {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Custom cursor — desktop/mouse devices only */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}

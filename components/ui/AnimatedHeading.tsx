@@ -38,14 +38,15 @@ export default function AnimatedHeading({
         const letters = el!.querySelectorAll('.letter')
         gsap.fromTo(
           letters,
-          { opacity: 0, y: 40, rotation: 8 },
+          { opacity: 0, y: 50, rotation: 6, filter: 'blur(8px)' },
           {
             opacity: 1,
             y: 0,
             rotation: 0,
-            duration: 0.6,
+            filter: 'blur(0px)',
+            duration: 0.7,
             ease: 'back.out(1.7)',
-            stagger: 0.025,
+            stagger: 0.03,
             ...(trigger
               ? {
                   scrollTrigger: {

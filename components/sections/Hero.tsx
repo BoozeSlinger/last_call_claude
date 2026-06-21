@@ -6,12 +6,17 @@ import AnimatedHeading from '@/components/ui/AnimatedHeading'
 import Button from '@/components/ui/Button'
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null)
   const eyebrowRef = useRef<HTMLDivElement>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
   const bodyRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const trustRef = useRef<HTMLParagraphElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const ringBLRef = useRef<HTMLDivElement>(null)
+  const ringTRRef = useRef<HTMLDivElement>(null)
+  const magneticWrapRef = useRef<HTMLDivElement>(null)
+  const magneticBtnRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -23,6 +28,9 @@ export default function Hero() {
   useEffect(() => {
     async function animate() {
       const gsap = (await import('gsap')).default
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      gsap.registerPlugin(ScrollTrigger)
+
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
       tl.fromTo(eyebrowRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 })
@@ -31,17 +39,80 @@ export default function Hero() {
         .fromTo(ctaRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
         .fromTo(trustRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, '-=0.2')
         .fromTo(scrollRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, '-=0.2')
+
+      // Parallax depth on decorative rings
+      if (ringBLRef.current && sectionRef.current) {
+        gsap.to(ringBLRef.current, {
+          y: -140,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.5,
+          },
+        })
+      }
+      if (ringTRRef.current && sectionRef.current) {
+        gsap.to(ringTRRef.current, {
+          y: 80,
+          x: -40,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 2,
+          },
+        })
+      }
     }
     animate()
   }, [])
 
+  // Magnetic CTA button
+  useEffect(() => {
+    if (!magneticWrapRef.current || !magneticBtnRef.current) return
+
+    const wrap = magneticWrapRef.current
+    const btn = magneticBtnRef.current
+    let cleanup: (() => void) | undefined
+
+    async function setup() {
+      const { default: gsap } = await import('gsap')
+
+      const onMove = (e: MouseEvent) => {
+        const rect = wrap.getBoundingClientRect()
+        const dx = e.clientX - (rect.left + rect.width / 2)
+        const dy = e.clientY - (rect.top + rect.height / 2)
+        gsap.to(btn, { x: dx * 0.35, y: dy * 0.35, ease: 'power2.out', duration: 0.3, overwrite: 'auto' })
+      }
+      const onLeave = () => {
+        gsap.to(btn, { x: 0, y: 0, ease: 'elastic.out(1, 0.4)', duration: 0.6, overwrite: 'auto' })
+      }
+
+      wrap.addEventListener('mousemove', onMove)
+      wrap.addEventListener('mouseleave', onLeave)
+
+      return () => {
+        wrap.removeEventListener('mousemove', onMove)
+        wrap.removeEventListener('mouseleave', onLeave)
+      }
+    }
+
+    setup().then(fn => { cleanup = fn })
+    return () => cleanup?.()
+  }, [])
+
   return (
     <section
+      ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: '10rem' }}
     >
       {/* Bottom-left decorative ring */}
       <div
+        ref={ringBLRef}
         aria-hidden="true"
         style={{
           position: 'absolute',
@@ -60,6 +131,7 @@ export default function Hero() {
 
       {/* Top-right decorative ring */}
       <div
+        ref={ringTRRef}
         aria-hidden="true"
         style={{
           position: 'absolute',
@@ -153,35 +225,43 @@ export default function Hero() {
         </p>
 
         <div ref={ctaRef} style={{ opacity: 0, marginBottom: '1.5rem' }}>
-          <Button
-            variant="brass"
-            size="lg"
-            className="group"
-            onClick={() =>
-              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-            }
+          {/* Magnetic field — wider than the button so mouse proximity kicks in early */}
+          <div
+            ref={magneticWrapRef}
+            style={{ display: 'inline-block', padding: '40px', margin: '-40px' }}
           >
-            Let&apos;s Build
-            <span
-              aria-hidden="true"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                border: '1px solid currentColor',
-                flexShrink: 0,
-                transition: 'transform 0.5s ease',
-              }}
-              className="group-hover:rotate-[360deg]"
-            >
-              <svg width="6" height="6" viewBox="0 0 6 6" fill="none">
-                <circle cx="3" cy="3" r="2.5" fill="currentColor" />
-              </svg>
-            </span>
-          </Button>
+            <div ref={magneticBtnRef} style={{ display: 'inline-block' }}>
+              <Button
+                variant="brass"
+                size="lg"
+                className="group"
+                onClick={() =>
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                Let&apos;s Build
+                <span
+                  aria-hidden="true"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    border: '1px solid currentColor',
+                    flexShrink: 0,
+                    transition: 'transform 0.5s ease',
+                  }}
+                  className="group-hover:rotate-[360deg]"
+                >
+                  <svg width="6" height="6" viewBox="0 0 6 6" fill="none">
+                    <circle cx="3" cy="3" r="2.5" fill="currentColor" />
+                  </svg>
+                </span>
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Brass accent line */}
