@@ -110,6 +110,43 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: '10rem' }}
     >
+      {/* Cinematic full-bleed video background */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            mixBlendMode: 'screen',
+            opacity: 0.18,
+          }}
+        >
+          <source src="/The All Seeing Ice.mp4" type="video/mp4" />
+        </video>
+        {/* Radial vignette so edges don't compete with text */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(17,16,9,0.85) 100%)',
+          }}
+        />
+      </div>
+
       {/* Bottom-left decorative ring */}
       <div
         ref={ringBLRef}
@@ -153,36 +190,11 @@ export default function Hero() {
           <EyebrowText>Digital Agency · Bar &amp; Hospitality</EyebrowText>
         </div>
 
-        {/* All Seeing Ice — in document flow, above heading */}
-        <div
-          style={{
-            width: '100%',
-            maxWidth: '340px',
-            margin: '0 auto 1.5rem',
-            pointerEvents: 'none',
-          }}
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-              mixBlendMode: 'screen',
-            }}
-          >
-            <source src="/The All Seeing Ice.mp4" type="video/mp4" />
-          </video>
-        </div>
-
         {/* Wrapper applies the Oi font + size — AnimatedHeading receives className only */}
         <div
           style={{
             fontFamily: "'Oi', serif",
-            fontSize: 'clamp(2.6rem, 5.5vw, 5rem)',
+            fontSize: 'clamp(3.2rem, 7vw, 7rem)',
             color: 'var(--text-primary)',
             lineHeight: 1.1,
             marginBottom: '1.5rem',

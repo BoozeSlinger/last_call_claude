@@ -267,21 +267,23 @@ export default function SelectWorks() {
                     alignItems: 'center',
                     padding: '0 5% 0 5%',
                     position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  {/* Watermark number */}
+                  {/* Watermark number — 50-60% card height, bleeds off right edge */}
                   <span
                     aria-hidden="true"
                     style={{
                       position: 'absolute',
-                      top: '10%',
-                      right: '5%',
+                      top: '8%',
+                      right: '-0.1em',
                       fontFamily: "'Oi', serif",
-                      fontSize: 'clamp(6rem, 12vw, 10rem)',
-                      color: 'rgba(184,134,11,0.08)',
+                      fontSize: 'clamp(12rem, 28vw, 36rem)',
+                      color: 'rgba(184,134,11,0.055)',
                       lineHeight: 1,
                       userSelect: 'none',
                       pointerEvents: 'none',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {project.num}
