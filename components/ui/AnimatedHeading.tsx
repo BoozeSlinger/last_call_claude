@@ -15,73 +15,71 @@ export default function AnimatedHeading({
   trigger = false,
   className = '',
 }: AnimatedHeadingProps) {
-  const containerRef = useRef<HTMLElement>(null)
-
-  const words = children.split(' ')
+  const elRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    const el = containerRef.current
+    const el = elRef.current
     if (!el) return
 
     let ctx: { revert: () => void } | null = null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let split: any = null
 
-    async function setupAnimation() {
-      const gsapModule = await import('gsap')
-      const gsap = gsapModule.default
+    async function setup() {
+      // Fonts must be loaded before SplitText measures character widths
+      await document.fonts.ready
+
+      const gsap = (await import('gsap')).default
+      const { SplitText } = await import('gsap/SplitText')
 
       if (trigger) {
         const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-        gsap.registerPlugin(ScrollTrigger)
+        gsap.registerPlugin(SplitText, ScrollTrigger)
+      } else {
+        gsap.registerPlugin(SplitText)
       }
 
       ctx = gsap.context(() => {
-        const letters = el!.querySelectorAll('.letter')
-        gsap.fromTo(
-          letters,
-          { opacity: 0, y: 50, rotation: 6, filter: 'blur(8px)' },
-          {
-            opacity: 1,
-            y: 0,
-            rotation: 0,
-            filter: 'blur(0px)',
-            duration: 0.7,
-            ease: 'back.out(1.7)',
-            stagger: 0.03,
-            ...(trigger
-              ? {
-                  scrollTrigger: {
-                    trigger: el,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse',
-                  },
-                }
-              : { delay: 0.1 }),
-          }
-        )
+        // Masked word slide-up — each word clips from below its own overflow container
+        split = SplitText.create(el!, { type: 'words', mask: 'words' })
+        gsap.set(split.words, { y: '110%' })
+        gsap.set(el!, { visibility: 'visible' })
+
+        gsap.to(split.words, {
+          y: '0%',
+          duration: 0.9,
+          ease: 'power4.out',
+          stagger: 0.07,
+          force3D: true,
+          ...(trigger
+            ? {
+                scrollTrigger: {
+                  trigger: el,
+                  start: 'top 82%',
+                  toggleActions: 'play none none reverse',
+                  invalidateOnRefresh: true,
+                },
+              }
+            : { delay: 0.15 }),
+        })
       }, el!)
     }
 
-    setupAnimation()
+    setup()
 
     return () => {
+      split?.revert()
       ctx?.revert()
     }
   }, [trigger])
 
   return (
-    <Tag ref={containerRef as React.RefObject<HTMLHeadingElement>} className={className}>
-      {words.map((word, wi) => (
-        <span key={wi} className="word" style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-          {word.split('').map((char, ci) => (
-            <span key={ci} className="letter" style={{ display: 'inline-block' }}>
-              {char}
-            </span>
-          ))}
-          {wi < words.length - 1 && (
-            <span style={{ display: 'inline-block', width: '0.3em' }}>&nbsp;</span>
-          )}
-        </span>
-      ))}
+    <Tag
+      ref={elRef as React.RefObject<HTMLHeadingElement>}
+      className={className}
+      style={{ visibility: 'hidden' }}
+    >
+      {children}
     </Tag>
   )
 }
