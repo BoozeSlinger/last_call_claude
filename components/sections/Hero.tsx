@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import EyebrowText from '@/components/ui/EyebrowText'
 import AnimatedHeading from '@/components/ui/AnimatedHeading'
 import Button from '@/components/ui/Button'
+import IceCubeHero from '@/components/IceCubeHero'
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -146,6 +147,9 @@ export default function Hero() {
           }}
         />
       </div>
+
+      {/* WebGL ice cube — all-seeing eye showpiece */}
+      <IceCubeHero />
 
       {/* Bottom-left decorative ring */}
       <div

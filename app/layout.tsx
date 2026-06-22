@@ -3,7 +3,7 @@ import { Oi, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import GSAPProvider from '@/components/GSAPProvider'
 import PageTransition from '@/components/PageTransition'
-import AmbientDustCanvas from '@/components/AmbientDustCanvas'
+import ThreeBackground from '@/components/ThreeBackground'
 import NoiseOverlay from '@/components/NoiseOverlay'
 import MagneticCursor from '@/components/ui/MagneticCursor'
 
@@ -71,8 +71,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Custom brass cursor */}
         <MagneticCursor />
 
-        {/* Fixed background canvas */}
-        <AmbientDustCanvas />
+        {/* Three.js particle background */}
+        <ThreeBackground />
 
         {/* Animated noise overlay stack */}
         <NoiseOverlay />
