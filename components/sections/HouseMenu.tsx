@@ -140,7 +140,7 @@ export default function HouseMenu() {
 
       ctx = gsap.context(() => {
         // Row entry — init via GSAP so React doesn't fight the opacity
-        const rows = container.querySelectorAll('.hm-row')
+        const rows = container!.querySelectorAll('.hm-row')
         gsap.set(rows, { x: -50, opacity: 0 })
         gsap.to(rows, {
           x: 0,
@@ -194,7 +194,7 @@ export default function HouseMenu() {
         gsap.set(spot, { xPercent: -50, yPercent: -50, opacity: 0 })
 
         const onMove = (e: MouseEvent) => {
-          const rect = container.getBoundingClientRect()
+          const rect = container!.getBoundingClientRect()
           gsap.to(spot, {
             x: e.clientX - rect.left,
             y: e.clientY - rect.top,
@@ -206,11 +206,11 @@ export default function HouseMenu() {
         }
         const onLeave = () => gsap.to(spot, { opacity: 0, duration: 0.4 })
 
-        container.addEventListener('mousemove', onMove)
-        container.addEventListener('mouseleave', onLeave)
+        container!.addEventListener('mousemove', onMove)
+        container!.addEventListener('mouseleave', onLeave)
         spotCleanup = () => {
-          container.removeEventListener('mousemove', onMove)
-          container.removeEventListener('mouseleave', onLeave)
+          container!.removeEventListener('mousemove', onMove)
+          container!.removeEventListener('mouseleave', onLeave)
         }
       }
     }
